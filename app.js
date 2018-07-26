@@ -122,11 +122,11 @@ app.post('/stream', (req, res) => {
  // UPDATE : NEW CODE DOES NOT NEED JSON PARSING
   var query=`${req.body.selecta}`
   
-  client.query(query);
+
 
     
 //change testtable when deploy
-    var stream = client.query(copyTo('COPY testtable TO STDOUT (DELIMITER",")'));    
+    var stream = client.query(copyTo(`COPY ${query} TO STDOUT (DELIMITER",")`));    
         stream.pipe(process.stdout);
         res.attachment('results.csv');
         stream.pipe(res);
