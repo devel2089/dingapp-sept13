@@ -126,7 +126,7 @@ app.post('/stream', (req, res) => {
 
     
 //change testtable when deploy
-    var stream = client.query(copyTo(`COPY ${query} TO STDOUT (DELIMITER",")`));    
+    var stream = client.query(copyTo(`COPY ${query} TO STDOUT With CSV HEADER DELIMITER','`));    
         stream.pipe(process.stdout);
         res.attachment('results.csv');
         stream.pipe(res);
