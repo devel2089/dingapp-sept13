@@ -152,8 +152,8 @@ app.post('/stream', (req, res) => {
             console.log ("hihi"+(req.files.fbai[0].fieldname))
             if (typeof (req.files['fbai']) != 'undefined' && typeof (req.files['testtable']) != 'undefined') {
             
-                var fileup1 = streamifier.createReadStream(req.files['fbai'].buffer)
-                var fileup2 = streamifier.createReadStream(req.files['testtable'].buffer)
+                var fileup1 = streamifier.createReadStream(req.files['fbai'][0].buffer)
+                var fileup2 = streamifier.createReadStream(req.files['testtable'][0].buffer)
                 client.connect();
                 var streamFile1 = client.query(copyFrom(`COPY fbai FROM STDIN With CSV HEADER DELIMITER ','`));
 
@@ -172,12 +172,12 @@ app.post('/stream', (req, res) => {
                             `)
 
             } else if (typeof (req.files['fbai']) != "undefined") {
-                var fileup1 = streamifier.createReadStream(req.files['fbai'].buffer)
+                var fileup1 = streamifier.createReadStream(req.files['fbai'][0].buffer)
                 client.connect();
                 var streamFile1 = client.query(copyFrom(`COPY fbai FROM STDIN With CSV HEADER DELIMITER ','`));
                 fileup1.pipe(streamFile1);
             } else if (typeof (req.files['testtable']) != "undefined") {
-                var fileup2 = streamifier.createReadStream(req.files['testtable'].buffer)
+                var fileup2 = streamifier.createReadStream(req.files['testtable'][0].buffer)
                 client.connect();
                 var streamFile2 = client.query(copyFrom(`COPY testtable FROM STDIN With CSV HEADER DELIMITER ','`));
                 fileup2.pipe(streamFile2);
