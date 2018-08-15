@@ -175,6 +175,15 @@ app.post('/stream', (req, res) => {
                 client.connect();
                 var streamFile1 = client.query(copyFrom(`COPY fbai FROM STDIN With CSV HEADER DELIMITER ','`));
                 fileup1.pipe(streamFile1);
+                 client.query(`DO $$
+                            BEGIN
+                            IF EXISTS (select * from public."Transactions" where "OrderID" = (select "OrderID" from public."testtable" where "OrderID" is not null order by "DateTime" ASC LIMIT 1))
+                            THEN DELETE from public."testtable";
+                            ELSE insert into public."Transactions" select *, current_timestamp from public."testtable";
+                            END IF;
+                            END
+                            $$;
+                            `)
             } else if (typeof (req.files[1]) != "undefined") {
                 var fileup2 = streamifier.createReadStream(req.files[1].buffer)
                 client.connect();
