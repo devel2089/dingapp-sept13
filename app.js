@@ -130,6 +130,7 @@ app.post('/stream', (req, res) => {
         stream.pipe(process.stdout);
         res.attachment('results.csv');
         stream.pipe(res);
+        
 
     
     })
@@ -140,68 +141,34 @@ const upload = multer({
     storage: storage
 }).array('csvfile', 2);
  
-    app.post('/upload', (req, res) => {
-        upload(req, res, (err) => {
-            // DELETE from the tables 
-            client.connect()
-            client.query(`DELETE from public."testtable";`)
-            client.query(`DELETE from public."fbai";`)
-            /*beginning file upload 
-            /*postgres from*/
+app.post('/upload',(req,res)=>{
+    upload(req,res, (err)=>{
 
-            if (typeof (req.files[0]) != 'undefined' && typeof (req.files[1]) != 'undefined') {
-                var fileup1 = streamifier.createReadStream(req.files[0].buffer)
-                var fileup2 = streamifier.createReadStream(req.files[1].buffer)
-                client.connect();
-                var streamFile1 = client.query(copyFrom(`COPY fbai FROM STDIN With CSV HEADER DELIMITER ','`));
-
-                fileup1.pipe(streamFile1);
-                var streamFile2 = client.query(copyFrom(`COPY testtable FROM STDIN With CSV HEADER DELIMITER ','`));
-
-                fileup2.pipe(streamFile2);
-                client.query(`DO $$
-                            BEGIN
-                            IF EXISTS (select * from public."Transactions" where "OrderID" = (select "OrderID" from public."testtable" where "OrderID" is not null order by "DateTime" ASC LIMIT 1))
-                            THEN DELETE from public."testtable";
-                            ELSE insert into public."Transactions" select *, current_timestamp from public."testtable";
-                            END IF;
-                            END
-                            $$;
-                            `)
-                
-            } else if (typeof (req.files[0]) != "undefined") {
-                var fileup1 = streamifier.createReadStream(req.files[0].buffer)
-                client.connect();
-                var streamFile1 = client.query(copyFrom(`COPY fbai FROM STDIN With CSV HEADER DELIMITER ','`));
-                fileup1.pipe(streamFile1);
-            } else if (typeof (req.files[1]) != "undefined") {
-                var fileup2 = streamifier.createReadStream(req.files[1].buffer)
-                client.connect();
-                var streamFile2 = client.query(copyFrom(`COPY testtable FROM STDIN With CSV HEADER DELIMITER ','`));
-                fileup2.pipe(streamFile2);
-                client.query(`DO $$
-                            BEGIN
-                            IF EXISTS (select * from public."Transactions" where "OrderID" = (select "OrderID" from public."testtable" where "OrderID" is not null order by "DateTime" ASC LIMIT 1))
-                            THEN DELETE from public."testtable";
-                            ELSE insert into public."Transactions" select *, current_timestamp from public."testtable";
-                            END IF;
-                            END
-                            $$;
-                            `)
-            }
-
-
-            if (err) {
-                res.redirect('./', {
-
-                });
-            } else {
-
-                res.redirect('./');
-            }
-
-        });
+        if(err) {
+            res.redirect('./',{
+                msg:err
+            });
+        }else {
+            
+            res.redirect('./');
+        }
+    
+        /*beginning file upload 
+        /*postgres from*/
+        
+        var fileup1=streamifier.createReadStream(req.files[0].buffer)
+        var fileup2=streamifier.createReadStream(req.files[1].buffer)
+        client.connect();
+        var streamFile1= client.query(copyFrom(`COPY fbai FROM STDIN With CSV HEADER DELIMITER ','`));
+        
+        fileup1.pipe(streamFile1);       
+        var streamFile2 = client.query(copyFrom(`COPY testtable FROM STDIN With CSV HEADER DELIMITER ','`));
+        
+        fileup2.pipe(streamFile2);
+      
+ 
     });
+});
 
 
 //Server
