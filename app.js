@@ -149,7 +149,7 @@ app.post('/stream', (req, res) => {
             client.query(`DELETE from public."fbai";`)
             /*beginning file upload 
             /*postgres from*/
-            console.log ("hihi"+JSON.stringify(req.files))
+            console.log ("hihi"+JSON.stringify(req.files.fbai))
             if (typeof (req.files['fbai']) != 'undefined' && typeof (req.files['testtable']) != 'undefined') {
             
                 var fileup1 = streamifier.createReadStream(req.files['fbai'].buffer)
