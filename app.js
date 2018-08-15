@@ -175,7 +175,6 @@ app.post('/stream', (req, res) => {
                 client.connect();
                 var streamFile1 = client.query(copyFrom(`COPY fbai FROM STDIN With CSV HEADER DELIMITER ','`));
                 fileup1.pipe(streamFile1);
-                console.log(`req.body is ${req.body}`)
             } else if (typeof (req.files[1]) != "undefined") {
                 var fileup2 = streamifier.createReadStream(req.files[1].buffer)
                 client.connect();
