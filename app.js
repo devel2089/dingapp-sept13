@@ -150,10 +150,10 @@ app.post('/stream', (req, res) => {
             /*beginning file upload 
             /*postgres from*/
             console.log (req.files.fbai)
-            if (typeof (req.files['fbai'][0]) != 'undefined' && typeof (req.files['testtable'][0]) != 'undefined') {
+            if (typeof (req.files['fbai']) != 'undefined' && typeof (req.files['testtable']) != 'undefined') {
             
-                var fileup1 = streamifier.createReadStream(req.files['fbai'][0].buffer)
-                var fileup2 = streamifier.createReadStream(req.files['testtable'][0].buffer)
+                var fileup1 = streamifier.createReadStream(req.files['fbai'].buffer)
+                var fileup2 = streamifier.createReadStream(req.files['testtable'].buffer)
                 client.connect();
                 var streamFile1 = client.query(copyFrom(`COPY fbai FROM STDIN With CSV HEADER DELIMITER ','`));
 
@@ -171,13 +171,13 @@ app.post('/stream', (req, res) => {
                             $$;
                             `)
 
-            } else if (typeof (req.files['fbai'][0]) != "undefined") {
-                var fileup1 = streamifier.createReadStream(req.files['fbai'][0].buffer)
+            } else if (typeof (req.files['fbai']) != "undefined") {
+                var fileup1 = streamifier.createReadStream(req.files['fbai'].buffer)
                 client.connect();
                 var streamFile1 = client.query(copyFrom(`COPY fbai FROM STDIN With CSV HEADER DELIMITER ','`));
                 fileup1.pipe(streamFile1);
-            } else if (typeof (req.files['testtable'][0]) != "undefined") {
-                var fileup2 = streamifier.createReadStream(req.files['testtable'][0].buffer)
+            } else if (typeof (req.files['testtable']) != "undefined") {
+                var fileup2 = streamifier.createReadStream(req.files['testtable'].buffer)
                 client.connect();
                 var streamFile2 = client.query(copyFrom(`COPY testtable FROM STDIN With CSV HEADER DELIMITER ','`));
                 fileup2.pipe(streamFile2);
