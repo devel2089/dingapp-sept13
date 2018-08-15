@@ -139,7 +139,7 @@ app.post('/stream', (req, res) => {
     // Init Upload
     const upload = multer({
         storage: storage
-    }).array('csvfile', 2);
+    }).fields([{name:'fbai'},{name:'testtable'}])
 
     app.post('/upload', (req, res) => {
         upload(req, res, (err) => {
@@ -150,9 +150,9 @@ app.post('/stream', (req, res) => {
             /*beginning file upload 
             /*postgres from*/
 
-            if (typeof (req.files[0]) != 'undefined' && typeof (req.files[1]) != 'undefined') {
-                var fileup1 = streamifier.createReadStream(req.files[0].buffer)
-                var fileup2 = streamifier.createReadStream(req.files[1].buffer)
+            if (typeof (req.files['fbai'][0]) != 'undefined' && typeof (req.files['testtable'][0]) != 'undefined') {
+                var fileup1 = streamifier.createReadStream(req.files['fbai'][0].buffer)
+                var fileup2 = streamifier.createReadStream(req.files['testtable'][0].buffer)
                 client.connect();
                 var streamFile1 = client.query(copyFrom(`COPY fbai FROM STDIN With CSV HEADER DELIMITER ','`));
 
@@ -170,13 +170,13 @@ app.post('/stream', (req, res) => {
                             $$;
                             `)
 
-            } else if (typeof (req.files[0]) != "undefined") {
-                var fileup1 = streamifier.createReadStream(req.files[0].buffer)
+            } else if (typeof (req.files['fbai'][0]) != "undefined") {
+                var fileup1 = streamifier.createReadStream(req.files['fbai'][0].buffer)
                 client.connect();
                 var streamFile1 = client.query(copyFrom(`COPY fbai FROM STDIN With CSV HEADER DELIMITER ','`));
                 fileup1.pipe(streamFile1);
-            } else if (typeof (req.files[1]) != "undefined") {
-                var fileup2 = streamifier.createReadStream(req.files[1].buffer)
+            } else if (typeof (req.files['testtable'][0]) != "undefined") {
+                var fileup2 = streamifier.createReadStream(req.files['testtable'][0].buffer)
                 client.connect();
                 var streamFile2 = client.query(copyFrom(`COPY testtable FROM STDIN With CSV HEADER DELIMITER ','`));
                 fileup2.pipe(streamFile2);
