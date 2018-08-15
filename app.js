@@ -143,9 +143,10 @@ const upload = multer({
  
     app.post('/upload', (req, res) => {
         upload(req, res, (err) => {
-
-
-
+            // DELETE from the tables 
+            client.connect()
+            client.query(`DELETE from public."testtable";`)
+            client.query(`DELETE from public."fbai";`)
             /*beginning file upload 
             /*postgres from*/
 
@@ -159,6 +160,16 @@ const upload = multer({
                 var streamFile2 = client.query(copyFrom(`COPY testtable FROM STDIN With CSV HEADER DELIMITER ','`));
 
                 fileup2.pipe(streamFile2);
+                client.query(`DO $$
+                            BEGIN
+                            IF EXISTS (select * from public."Transactions" where "OrderID" = (select "OrderID" from public."testtable" where "OrderID" is not null order by "DateTime" ASC LIMIT 1))
+                            THEN DELETE from public."testtable";
+                            ELSE insert into public."Transactions" select *, current_timestamp from public."testtable";
+                            END IF;
+                            END
+                            $$;
+                            `)
+                
             } else if (typeof (req.files[0]) != "undefined") {
                 var fileup1 = streamifier.createReadStream(req.files[0].buffer)
                 client.connect();
@@ -169,6 +180,15 @@ const upload = multer({
                 client.connect();
                 var streamFile2 = client.query(copyFrom(`COPY testtable FROM STDIN With CSV HEADER DELIMITER ','`));
                 fileup2.pipe(streamFile2);
+                client.query(`DO $$
+                            BEGIN
+                            IF EXISTS (select * from public."Transactions" where "OrderID" = (select "OrderID" from public."testtable" where "OrderID" is not null order by "DateTime" ASC LIMIT 1))
+                            THEN DELETE from public."testtable";
+                            ELSE insert into public."Transactions" select *, current_timestamp from public."testtable";
+                            END IF;
+                            END
+                            $$;
+                            `)
             }
 
 
