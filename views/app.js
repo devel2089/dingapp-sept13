@@ -110,7 +110,7 @@ app.get('/', function (req, res) {
         
 });
 
-app.get('/', function (req, res) {
+app.get('/sqlquery', function (req, res) {
     client.connect();
     
     client.query('SELECT * FROM sqldata', function (err, result) {
