@@ -110,14 +110,9 @@ app.get('/', function (req, res) {
         
 });
 
-app.get('/sqlquery', function (req, res) {
-    res.render('sqlquery.ejs');
-     
-    })
-
-
-        
-});
+app.get('/sqlquery',function(req,res){
+    res.render('download.ejs',{sqldata:result.rows});
+})
 
 
 //pg-copy-stream ---- exports the results
