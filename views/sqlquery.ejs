@@ -1,0 +1,61 @@
+<html>
+<head>
+<title>Query</title>
+<link rel="stylesheet" href="/css/bootstrap.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.2/css/materialize.min.css">
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>			 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js" integrity="sha384-o+RDsa0aLu++PJvFqy8fFScvbHFLtbvScb8AjopnFD+iEQ7wo/CG0xlczd+2O/em" crossorigin="anonymous"></script>			  
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.2/js/materialize.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.2/js/materialize.min.js"></script>
+
+</head>
+<body>
+ 
+    <div class="container">
+        <h1> File Upload</h1>
+        <%= typeof msg != 'undefined'? msg : '' %>
+        <form action="/upload" method="POST" enctype="multipart/form-data">
+            <div class="file-field input-field">
+                <div class="btn blue">
+                    <span>FBA</span>
+                    <input name="fbai" type="file">
+                </div>
+                <div class="file-path-wrapper">
+                    <input class="file-path validate" type="text">
+                </div>
+            <div class="file-field input-field">
+                <div class="btn blue">
+                    <span>Transactions</span>
+                    <input name="testtable" type="file">
+                </div>
+                <div class="file-path-wrapper">
+                    <input class="file-path validate" type="text">
+                </div>
+            </div>
+
+            <button type="submit" class="btn">Submit</button>
+        </form>
+      
+
+    </div>
+    
+<br><br>
+<h1>Query</h1>
+    
+    <!--QUERY DROPDOWN MENU-->
+<form method=post action="/stream">   
+   <select name="selecta" id="selecta" class="custom-select w-25 p-1" size='<%%sqldata.length%>'>
+   <option selected>Select Query</option>
+   <%for (var i=0;i<sqldata.length;i++){%>
+   <option value="<%=sqldata[i].query%>"><%=sqldata[i].name%></option>
+   <%}%>
+   </select>
+   <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+
+</body>
+</html>
+
+
