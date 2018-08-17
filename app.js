@@ -223,8 +223,8 @@ app.post('/stream', (req, res) => {
     app.post('/postsql', (req, res) => {
         var postsqlquery = `${req.body.selecta}`
         client.connect();
-        client.query(`DELETE FROM public."Transactions";`);
-        res.redirect('/')
+        client.query(postsqlquery);
+        res.redirect('/sqlquery')
 
 
     })
