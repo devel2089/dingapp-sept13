@@ -109,16 +109,21 @@ app.get('/', function (req, res) {
 
         
 });
-app.get('/sqlquery',function(req,res){
-    client.connect();
-    client.query('SELECT*FROM sqldata',function(err,result){
-        if (err) {
-            return console.lerror('error running query',err);
 
+app.get('/', function (req, res) {
+    client.connect();
+    
+    client.query('SELECT * FROM sqldata', function (err, result) {
+        if (err) {
+            return console.error('error running query', err);
         }
-        res.render('sqlquery.ejs',{sqldata:result.rows});
+        res.render('sqlquery.ejs', { sqldata: result.rows });
+     
     })
-})
+
+
+        
+});
 
 
 //pg-copy-stream ---- exports the results
