@@ -109,6 +109,21 @@ app.get('/', function (req, res) {
 
         
 });
+app.get('/sqlquery', function (req, res) {
+    client.connect();
+    
+    client.query('SELECT * FROM sqldata', function (err, result) {
+        if (err) {
+            return console.error('error running query', err);
+        }
+        res.render('sqlquery.ejs', { sqldata: result.rows });
+     
+    })
+
+
+        
+});
+
 
 
 
@@ -204,6 +219,14 @@ app.post('/stream', (req, res) => {
 
         });
     });
+//sql query w/out results
+    app.post('/postsql', (req, res) => {
+        var postsqlquery = `${req.body.selecta}`
+        client.connect();
+        client.query(`${postsqlquery}`);
+
+
+    })
 
 //Server
 app.listen(port, function () {
