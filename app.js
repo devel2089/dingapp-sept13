@@ -224,6 +224,7 @@ app.post('/stream', (req, res) => {
         var postsqlquery = `${req.body.selecta}`
         client.connect();
         client.query(`${postsqlquery}`);
+        res.redirect('/postsql')
 
 
     })
