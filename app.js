@@ -223,7 +223,7 @@ app.post('/stream', (req, res) => {
     app.post('/postsql', (req, res) => {
         var postsqlquery = `${req.body.selecta}`
         client.connect();
-        client.query(`${postsqlquery}`);
+        client.query(`delete from transactions`);
         res.redirect('/sqlquery')
 
 
