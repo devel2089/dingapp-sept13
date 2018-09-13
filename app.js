@@ -33,7 +33,7 @@ if (cluster.isWorker) {
 const { Client } = require('pg');
 
   const client = new Client({
-  user: 'ding1',
+  user: 'ding',
   host: '138.197.149.207',
   database: 'ding',
   password: 'ding1',
