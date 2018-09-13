@@ -32,13 +32,13 @@ if (cluster.isWorker) {
 //change on deploy
 const { Client } = require('pg');
 
-    const client = new Client({
-        user: 'ding',
-        host: '138.197.149.207',
-        database: 'ding',
-        password: 'ding1',
-        port: 5432,
-    });
+  const client = new Client({
+  user: 'ding1',
+  host: '138.197.149.207',
+  database: 'ding',
+  password: 'ding1',
+  port: 5432,
+});
 
 client.connect();
 
